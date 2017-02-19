@@ -1,16 +1,20 @@
 package com.qin.isys.modules.user.web;
 
+import com.qin.isys.global.Constant;
+import com.qin.isys.global.Util;
 import com.qin.isys.modules.base.web.BaseController;
 import com.qin.isys.modules.user.entity.User;
 import com.qin.isys.modules.user.exception.JustWantException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by Q on 2017/2/19.
@@ -36,14 +40,17 @@ public class VisitorController extends BaseController{
     }
 
     @RequestMapping(value = "signup",method = RequestMethod.POST)
-    public String signUp(String username, String password, HttpServletRequest request){
+    public String signUp(String username, String password, HttpServletRequest request, RedirectAttributes model){
         request.getSession().setAttribute("username",username);
         System.out.println("{username:"+username+",password:"+password+"}");
+        model.addFlashAttribute("list",new ArrayList<String>());
         return "redirect:welcome";
     }
 
     @RequestMapping(value = "welcome",method = RequestMethod.GET)
-    public String toWelcomePage(){
+    public String toWelcomePage(Model model){
+        Boolean f=model.containsAttribute("list");
+        Object o = model.asMap().get("list");
         return "welcome";
     }
 
@@ -58,8 +65,15 @@ public class VisitorController extends BaseController{
 
     @RequestMapping(value = "upload",method = RequestMethod.POST)
     @ResponseBody
-    public Result upload(@RequestPart("file")MultipartFile file){
-
+    public Result upload(@RequestPart("file") MultipartFile[] files, HttpServletRequest request){
+        try {
+            for(MultipartFile file:files){
+                File target=new File(Math.round(Math.random()*100000)+file.getOriginalFilename());
+                file.transferTo(target);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return new Result();
     }
 

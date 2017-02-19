@@ -7,6 +7,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 import javax.servlet.Filter;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration;
+import java.io.File;
 
 /**
  * dispatcherServlet configuration file.
@@ -42,7 +43,7 @@ public class DispatcherServlet extends AbstractAnnotationConfigDispatcherServlet
      */
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
-        registration.setMultipartConfig(new MultipartConfigElement("/uploads",2*1024*1024,10*1024*1024,0));
+        registration.setMultipartConfig(new MultipartConfigElement("E:/IdeaProjects/isys/src/main/webapp/uploads",2*1024*1024,10*1024*1024,0));
     }
 
     /**
