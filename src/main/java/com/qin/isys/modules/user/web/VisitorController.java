@@ -1,10 +1,12 @@
 package com.qin.isys.modules.user.web;
 
+import com.qin.isys.config.data.DataSource;
 import com.qin.isys.global.Constant;
 import com.qin.isys.global.Util;
 import com.qin.isys.modules.base.web.BaseController;
 import com.qin.isys.modules.user.entity.User;
 import com.qin.isys.modules.user.exception.JustWantException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
@@ -21,6 +27,9 @@ import java.util.ArrayList;
  */
 @Controller
 public class VisitorController extends BaseController{
+
+    @Autowired
+    DataSource dataSource;
 
     @RequestMapping(value = "signin",method = RequestMethod.GET)
     public String toSignInPage(){
@@ -58,6 +67,19 @@ public class VisitorController extends BaseController{
     @RequestMapping(value = "test")
     @ResponseBody
     public Result test(){
+        try {
+            /*unUseAble*/
+            Connection connection=dataSource.getConnection();
+            Statement statement=connection.createStatement();
+            statement.execute("select * from user");
+            ResultSet resultSet=statement.getResultSet();
+            while (resultSet.next()){
+
+            }
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         Result result=new Result(State.OK,new User(),"you'll see this line if there have no problem occurred.");
         System.out.println(result.getState());
         return result;

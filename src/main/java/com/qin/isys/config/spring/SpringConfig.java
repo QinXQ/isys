@@ -6,7 +6,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
- * Created by Q on 2017/2/18.
+ * spring configuration.
  */
 @Configuration
 @ComponentScan(basePackages = {"com.qin.isys"},excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION,value = EnableWebMvc.class)})

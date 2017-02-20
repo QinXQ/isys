@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping(value = {"{userName}"})
 public class UserController {
 
-    @RequestMapping(value = {"center","index"},method = RequestMethod.GET)
+    @RequestMapping(value = {"center"},method = RequestMethod.GET)
     public String personalCenter(@PathVariable("userName") String userName){
         System.out.println("to "+userName+"'s personal page.");
         return "user/personalCenter";
